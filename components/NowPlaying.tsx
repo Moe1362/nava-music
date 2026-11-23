@@ -99,6 +99,15 @@ function Lyrics() {
     }
   }, [cur]);
 
+  if (!lines.length) {
+    return (
+      <div className="lyr lyr-none">
+        <div className="lyr-h">بی‌کلام</div>
+        <p className="on">{p.track.about}</p>
+        <p>این قطعه را ارکستر نوا ساخته است: ملودی بر پایهٔ دستگاه‌های موسیقی ایرانی، و صدای سازها با کامپیوتر ساخته شده. آزاد و بدون مشکل کپی‌رایت.</p>
+      </div>
+    );
+  }
   const step = (p.track.duration - 6) / (lines.length * 2);
   return (
     <div className="lyr" ref={box} lang={p.track.chart === "wd" ? "en" : "fa"} dir={p.track.chart === "wd" ? "ltr" : "rtl"}>
@@ -133,14 +142,14 @@ export function NowPlaying({ onClose }: { onClose: () => void }) {
           <span>
             در حال پخش از <b>{p.source}</b>
           </span>
-          <button
+          {t.audio ? <span className="ib" aria-hidden /> : <button
             className={`ib${p.soundOn ? "" : " act"}`}
             aria-label={p.soundOn ? "قطع صدای نمونه" : "وصل صدای نمونه"}
             aria-pressed={!p.soundOn}
             onClick={() => p.setSoundOn(!p.soundOn)}
           >
             <SoundIcon off={!p.soundOn} />
-          </button>
+          </button>}
         </div>
         <div className="np-grid">
           <div className="np-main">
@@ -164,7 +173,11 @@ export function NowPlaying({ onClose }: { onClose: () => void }) {
           </div>
           <Lyrics />
         </div>
-        <p className="np-note">صدای پخش یک ملودی ساختگیِ تولیدشده در مرورگر است، نه آهنگ واقعی.</p>
+        <p className="np-note">
+          {t.audio
+            ? "موسیقی اورجینال نوا · ساخته‌شده با کد، آزاد برای استفاده"
+            : "این آهنگ نمونه است: صدای پخش یک ملودی ساده است که مرورگر می‌سازد."}
+        </p>
       </div>
     </div>
   );

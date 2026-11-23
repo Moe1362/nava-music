@@ -1,0 +1,90 @@
+[
+  {
+    "slug": "sepideh-shiraz",
+    "title": "سپیده در شیراز",
+    "genre": "سنتی",
+    "about": "دستگاه شور · سنتور و تمبک",
+    "colors": [
+      "#f2a93b",
+      "#b3263f"
+    ],
+    "duration": 151.6
+  },
+  {
+    "slug": "nasim-homayoun",
+    "title": "نسیم همایون",
+    "genre": "سنتی",
+    "about": "دستگاه همایون · نی و سنتور",
+    "colors": [
+      "#17b3a3",
+      "#0b2b4a"
+    ],
+    "duration": 157.8
+  },
+  {
+    "slug": "atash-chahargah",
+    "title": "آتش چهارگاه",
+    "genre": "سنتی",
+    "about": "دستگاه چهارگاه · تار و دف",
+    "colors": [
+      "#e6324b",
+      "#3a1630"
+    ],
+    "duration": 167.9
+  },
+  {
+    "slug": "bagh-eram",
+    "title": "باغ ارم",
+    "genre": "پاپ",
+    "about": "ماهور · سنتور با بیت پاپ",
+    "colors": [
+      "#2fd08f",
+      "#123d33"
+    ],
+    "duration": 154.8
+  },
+  {
+    "slug": "arusi-kucheh",
+    "title": "عروسی کوچه",
+    "genre": "شاد",
+    "about": "ماهور شش‌وهشتم · سنتور، تار و دف",
+    "colors": [
+      "#ff7a59",
+      "#5c1630"
+    ],
+    "duration": 157.6
+  },
+  {
+    "slug": "deltangi-esfahan",
+    "title": "دلتنگی اصفهان",
+    "genre": "عاشقانه",
+    "about": "بیات اصفهان · نی و پد",
+    "colors": [
+      "#3aa0ff",
+      "#1b1240"
+    ],
+    "duration": 144.2
+  },
+  {
+    "slug": "raghs-segah",
+    "title": "رقص سه‌گاه",
+    "genre": "شاد",
+    "about": "دستگاه سه‌گاه · تار و تمبک",
+    "colors": [
+      "#b8860b",
+      "#4a2a06"
+    ],
+    "duration": 153.8
+  },
+  {
+    "slug": "lofi-tehran",
+    "title": "لوفای تهران",
+    "genre": "بی‌کلام",
+    "about": "شور · پیانو الکتریک، بیت لوفای",
+    "colors": [
+      "#9b7bff",
+      "#140c1c"
+    ],
+    "duration": 152.6
+  }
+]

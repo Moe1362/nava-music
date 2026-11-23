@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { IRAN, type Track } from "./data";
+import { ORIGINALS, type Track } from "./data";
 import { DemoSynth } from "./synth";
 
 type PlayerState = {
@@ -30,9 +30,9 @@ const Ctx = createContext<PlayerState | null>(null);
 const LIKED_KEY = "nava:liked";
 
 export function PlayerProvider({ children }: { children: ReactNode }) {
-  const [queue, setQueue] = useState<Track[]>(IRAN);
+  const [queue, setQueue] = useState<Track[]>(ORIGINALS);
   const [index, setIndex] = useState(0);
-  const [source, setSource] = useState("ترند ایران");
+  const [source, setSource] = useState("بی‌کلام ایرانی نوا");
   const [playing, setPlaying] = useState(false);
   const [position, setPosition] = useState(0);
   const [soundOn, setSoundOn] = useState(true);
@@ -40,6 +40,14 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
   const [repeat, setRepeat] = useState(false);
   const [liked, setLiked] = useState<Set<string>>(new Set());
   const synth = useRef<DemoSynth | null>(null);
+  const audio = useRef<HTMLAudioElement | null>(null);
+  const getAudio = () => {
+    if (!audio.current) {
+      audio.current = new Audio();
+      audio.current.preload = "auto";
+    }
+    return audio.current;
+  };
   const posRef = useRef(0);
   posRef.current = position;
 
@@ -75,13 +83,15 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
         return (i + dir + queue.length) % queue.length;
       });
       setPosition(0);
+      if (audio.current) audio.current.currentTime = 0;
     },
     [queue.length, shuffle]
   );
 
-  // clock: move the play head while playing
+  // clock: move the play head while a demo (synth) track plays.
+  // Real audio files report their own time instead (see below).
   useEffect(() => {
-    if (!playing) return;
+    if (!playing || track.audio) return;
     let last = performance.now();
     const id = window.setInterval(() => {
       const now = performance.now();
@@ -90,35 +100,82 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
       setPosition((p) => p + dt);
     }, 200);
     return () => window.clearInterval(id);
-  }, [playing]);
+  }, [playing, track.audio]);
 
   // sound: restart the generator when the song, play state or seek changes
   const seekNonce = useRef(0);
   const [seekTick, setSeekTick] = useState(0);
   useEffect(() => {
     if (!synth.current) synth.current = new DemoSynth();
-    if (playing && soundOn) synth.current.start(track, posRef.current);
+    if (playing && soundOn && !track.audio) synth.current.start(track, posRef.current);
     else synth.current.stop();
     return () => synth.current?.stop();
   }, [track, playing, soundOn, seekTick]);
 
   const seek = useCallback(
     (sec: number) => {
-      setPosition(Math.max(0, Math.min(track.duration - 0.5, sec)));
+      const s = Math.max(0, Math.min(track.duration - 0.5, sec));
+      setPosition(s);
+      if (track.audio && audio.current) audio.current.currentTime = s;
       seekNonce.current++;
       setSeekTick(seekNonce.current);
     },
-    [track.duration]
+    [track.duration, track.audio]
   );
 
-  // end of song
+  // end of a demo song (real files fire "ended" instead)
   useEffect(() => {
-    if (position < track.duration) return;
+    if (track.audio || position < track.duration) return;
     if (repeat) seek(0);
     else step(1);
-  }, [position, track.duration, repeat, step, seek]);
+  }, [position, track.duration, track.audio, repeat, step, seek]);
+
+  // real audio files: load the file, then play or pause it
+  useEffect(() => {
+    const a = getAudio();
+    if (!track.audio) {
+      a.pause();
+      return;
+    }
+    const src = new URL(track.audio, window.location.href).href;
+    if (a.src !== src) {
+      a.src = src;
+      a.currentTime = posRef.current;
+    }
+    if (playing) a.play().catch(() => setPlaying(false));
+    else a.pause();
+  }, [track, playing]);
+
+  // keep the play head in sync with the audio file, and move on at the end
+  const onEnded = useRef(() => {});
+  onEnded.current = () => {
+    if (repeat) {
+      seek(0);
+      void getAudio().play();
+    } else step(1);
+  };
+  useEffect(() => {
+    const a = getAudio();
+    const time = () => setPosition(a.currentTime);
+    const ended = () => onEnded.current();
+    a.addEventListener("timeupdate", time);
+    a.addEventListener("ended", ended);
+    return () => {
+      a.removeEventListener("timeupdate", time);
+      a.removeEventListener("ended", ended);
+      a.pause();
+    };
+  }, []);
 
   const playFrom = useCallback((q: Track[], i: number, src: string) => {
+    // start real audio right inside the tap, so phones allow the sound
+    const t = q[i];
+    const a = getAudio();
+    if (t.audio) {
+      a.src = new URL(t.audio, window.location.href).href;
+      a.currentTime = 0;
+      a.play().catch(() => {});
+    } else a.pause();
     setQueue(q);
     setIndex(i);
     setSource(src);

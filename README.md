@@ -4,9 +4,9 @@
 
 An original music app for trending Iranian and global songs. First version: a web app you can also "install" on a phone.
 
-> **مهم:** همهٔ آهنگ‌ها، خواننده‌ها، آمارها و متن‌ها ساختگی‌اند. صدای پخش یک ملودی ساده است که خود مرورگر می‌سازد، نه آهنگ واقعی. برای پخش آهنگ واقعی اول باید مجوز (لایسنس) گرفت.
+> **مهم:** آهنگ‌های چارت‌ها (ایران، جهان، دیاسپورا) ساختگی‌اند و فقط یک ملودی ساده پخش می‌کنند. ۸ قطعهٔ «بی‌کلام ایرانی نوا» واقعی‌اند: با کد و بر پایهٔ دستگاه‌های موسیقی ایرانی ساخته شده‌اند، پس مال خود پروژه‌اند و مجوز لازم ندارند. برای پخش آهنگ خواننده‌های واقعی اول باید مجوز (لایسنس) گرفت.
 >
-> All songs, artists, numbers and lyrics are made up. The sound is a simple tune generated in the browser, not a real recording. Real songs need licences first.
+> The chart songs are made up and play a simple demo tune. The 8 "Nava Persian instrumentals" are real audio files composed by code (`scripts/compose.py`) from Persian modes, so the project owns them and needs no licence. Songs by real singers need licences first.
 
 ## What's inside
 
@@ -16,6 +16,21 @@ An original music app for trending Iranian and global songs. First version: a we
 - **کتابخانه (Library):** playlists, liked songs (saved in your browser), artists
 - **Player:** mini player, full-screen player with synced lyrics, seek, next/previous, shuffle, repeat, like
 - Right-to-left Persian layout, Vazirmatn font, phone and desktop layouts
+
+## The Nava instrumentals
+
+| Track | Mode (dastgah) | Instruments |
+| --- | --- | --- |
+| سپیده در شیراز | Shur | santur, tombak |
+| نسیم همایون | Homayoun | ney, santur |
+| آتش چهارگاه | Chahargah | tar, daf |
+| باغ ارم | Mahur | santur, pop beat |
+| عروسی کوچه | Mahur (6/8) | santur, tar, daf, tombak |
+| دلتنگی اصفهان | Bayat-e Esfahan | ney, santur, pad |
+| رقص سه‌گاه | Segah | tar, tombak |
+| لوفای تهران | Shur | electric piano, lo-fi beat |
+
+They live in `public/music/`. To make new ones, change `TRACKS` in `scripts/compose.py` and run `python3 scripts/compose.py` (needs Python with numpy, and ffmpeg).
 
 ## Run it on your computer
 
@@ -42,7 +57,9 @@ Then open http://localhost:3000 in your browser.
 | --- | --- |
 | `lib/data.ts` | The songs, charts and playlists (edit this to change the music list) |
 | `lib/player.tsx` | Player logic: play, pause, next, likes |
-| `lib/synth.ts` | Makes the demo sound |
+| `lib/synth.ts` | Makes the demo sound for the made-up chart songs |
+| `public/music/` | The real Nava instrumental tracks (mp3) |
+| `scripts/compose.py` | The program that composed them |
 | `components/views/` | The four screens |
 | `components/NowPlaying.tsx` | Full-screen player and lyrics |
 | `app/globals.css` | All colours and styles |

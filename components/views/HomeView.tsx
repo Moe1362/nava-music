@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { DIASPORA, GENRES, IRAN, PLAYLISTS, WORLD, findTrack, type ChartKey, type Track } from "@/lib/data";
+import { DIASPORA, GENRES, IRAN, ORIGINALS, PLAYLISTS, WORLD, findTrack, type ChartKey, type Track } from "@/lib/data";
 import { cover, fa } from "@/lib/format";
 import { usePlayer } from "@/lib/player";
 import { PlayIcon } from "../Icons";
@@ -40,7 +40,8 @@ export function HomeView({ openChart }: { openChart: (c: ChartKey) => void }) {
   const match = (t: Track) => genre === "همه" || t.genre === genre;
   const ir = IRAN.filter(match);
   const wd = WORLD.filter(match);
-  const top = IRAN[0];
+  const top = ORIGINALS[0];
+  const originals = ORIGINALS.filter(match);
 
   return (
     <>
@@ -56,12 +57,18 @@ export function HomeView({ openChart }: { openChart: (c: ChartKey) => void }) {
         ))}
       </div>
 
-      <button className="hero cv" style={cover(top.colors)} onClick={() => p.playFrom(IRAN, 0, "ترند ایران")}>
-        <small>شمارهٔ ۱ ترند امروز ایران</small>
+      <button className="hero cv" style={cover(top.colors)} onClick={() => p.playFrom(ORIGINALS, 0, "بی‌کلام ایرانی نوا")}>
+        <small>تازه · موسیقی اورجینال نوا</small>
         <strong>{top.title}</strong>
-        <small>{top.artist} · {fa(top.plays)} پخش</small>
+        <small>{top.artist} · {top.about}</small>
         <span className="play" aria-hidden><PlayIcon /></span>
       </button>
+
+      <div className="sec">
+        <h2>بی‌کلام ایرانی نوا</h2>
+        <span className="meta">سنتور، نی، تار، تمبک و دف</span>
+      </div>
+      {originals.length ? <CardRow list={originals} source="بی‌کلام ایرانی نوا" /> : <p className="empty">در این ژانر آهنگی نیست</p>}
 
       <div className="sec">
         <h2>داغ‌ترین‌های جهان</h2>

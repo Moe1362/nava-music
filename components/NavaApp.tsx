@@ -66,7 +66,7 @@ function Shell() {
             </button>
           );
         })}
-        <p className="side-note">همهٔ آهنگ‌ها، خواننده‌ها و آمارها نمونه و ساختگی‌اند.</p>
+        <p className="side-note">آهنگ‌های چارت‌ها نمونه و ساختگی‌اند. قطعه‌های «بی‌کلام ایرانی نوا» واقعی، اورجینال و آزادند.</p>
       </aside>
 
       <main className="view" ref={main}>

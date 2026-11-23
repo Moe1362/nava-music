@@ -41,7 +41,7 @@ export function TrackRow({ track, rank, queue, index, source, showLike }: Props)
         <span className="t">
           <b>{track.title}</b>
           <span>
-            {track.artist} · {fa(track.plays)}
+            {track.artist} · {track.plays ? fa(track.plays) : track.about}
           </span>
         </span>
         {rank !== undefined && <MoveBadge move={track.move} />}
