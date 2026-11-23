@@ -1,0 +1,11 @@
+{
+  "name": "نوا · موزیک ترند ایران و جهان",
+  "short_name": "نوا",
+  "lang": "fa",
+  "dir": "rtl",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#110c17",
+  "theme_color": "#110c17",
+  "icons": [{ "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }]
+}
