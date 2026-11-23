@@ -257,6 +257,8 @@ h1, h2 { margin: 0; line-height: 1.3; }
 .lyr[dir="ltr"] p { transform-origin: left center; }
 .lyr p:hover { color: #cdbfd6; }
 .lyr p.on { color: #fff; font-weight: 700; transform: scale(1.04); }
+.lyr-none p { cursor: default; font-size: 14px; line-height: 1.9; margin-top: 6px; }
+.lyr-none p.on { transform: none; }
 .np-note { color: var(--dim); font-size: 11.5px; text-align: center; margin: 14px 0 0; }
 
 /* ---------- desktop ---------- */

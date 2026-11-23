@@ -1,5 +1,7 @@
-// All songs, artists, plays and lyrics here are made up placeholders.
-// Replace them with licensed catalogue data when you have it.
+// The charts below use made-up placeholder songs (they play a demo tune).
+// ORIGINALS are real instrumental tracks made for Nava by scripts/compose.py:
+// they are original, so they need no licence.
+import music from "./music.json";
 
 export type ChartKey = "ir" | "wd" | "ds";
 export type Move = number | "new";
@@ -16,6 +18,8 @@ export type Track = {
   duration: number; // seconds
   bpm: number;
   lyrics: string[];
+  audio?: string; // a real audio file to play
+  about?: string; // short description, e.g. the mode and instruments
 };
 
 export const GENRES = ["همه", "پاپ", "رپ فارسی", "سنتی", "شاد", "عاشقانه", "بی‌کلام"] as const;
@@ -153,9 +157,25 @@ export const DIASPORA: Track[] = build(
   LY_FA
 );
 
+export const ORIGINALS: Track[] = music.map((m, i) => ({
+  id: `nv-${i + 1}`,
+  title: m.title,
+  artist: "ارکستر نوا",
+  colors: m.colors as [string, string],
+  move: 0,
+  plays: "",
+  genre: m.genre,
+  chart: "ir" as ChartKey,
+  duration: m.duration,
+  bpm: 0,
+  lyrics: [],
+  audio: `/music/${m.slug}.mp3`,
+  about: m.about,
+}));
+
 export const CHART_TRACKS: Record<ChartKey, Track[]> = { ir: IRAN, wd: WORLD, ds: DIASPORA };
 
-export const ALL_TRACKS: Track[] = [...IRAN, ...WORLD, ...DIASPORA];
+export const ALL_TRACKS: Track[] = [...ORIGINALS, ...IRAN, ...WORLD, ...DIASPORA];
 
 export const findTrack = (id: string) => ALL_TRACKS.find((t) => t.id === id);
 
@@ -171,6 +191,7 @@ export const BROWSE_TILES: { name: string; genre: string; colors: [string, strin
 export type Playlist = { id: string; name: string; colors: [string, string]; trackIds: string[]; offline?: boolean };
 
 export const PLAYLISTS: Playlist[] = [
+  { id: "nava", name: "بی‌کلام ایرانی نوا", colors: ["#e6324b", "#17b3a3"], trackIds: ORIGINALS.map((t) => t.id), offline: true },
   { id: "drive", name: "رانندگی شبانه", colors: ["#17b3a3", "#0b2b4a"], trackIds: ["ir-1", "wd-3", "ir-5", "ds-5", "wd-1"], offline: true },
   { id: "mix", name: "میکس روزانهٔ تو", colors: ["#f2a93b", "#7a1f3a"], trackIds: ["ir-3", "ir-6", "wd-5", "ds-3", "ir-8"] },
   { id: "miss", name: "دلتنگی", colors: ["#3aa0ff", "#1b1240"], trackIds: ["ir-2", "ir-4", "ds-4", "wd-7", "ir-7"] },
